@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.egardening.egardening.Session.TypeFaceUtil;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -43,6 +45,9 @@ public class SignUp extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+
+        TypeFaceUtil.applyFont(this, findViewById(R.id.signuplayout), "Montserrat-Regular.ttf");
+
 
         btn_cancel2 = (Button) findViewById(R.id.button_signup_cancel);
         btn_signup = (Button) findViewById(R.id.button_signup);

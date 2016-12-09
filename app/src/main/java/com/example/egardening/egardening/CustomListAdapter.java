@@ -32,7 +32,6 @@ public class CustomListAdapter extends ArrayAdapter<MenuItem> {
 
             Typeface menuFont = Typeface.createFromAsset(getContext().getAssets(), "IcoMoon-Free.ttf");
 
-
             if(row == null)
             {
                 LayoutInflater inflater = ((Activity)context).getLayoutInflater();
@@ -45,6 +44,7 @@ public class CustomListAdapter extends ArrayAdapter<MenuItem> {
 
                 row.setTag(holder);
             }
+
             else
             {
                 holder = (ItemHolder)row.getTag();
@@ -63,5 +63,7 @@ public class CustomListAdapter extends ArrayAdapter<MenuItem> {
             TextView txtIcon;
             TextView txtTitle;
         }
+
+    
 
 }

@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -11,8 +12,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="false"
-        android:background="#ffff4837"
-        android:weightSum="100">
+        android:background="@android:color/white"
+        android:weightSum="100"
+        android:id="@+id/mainlayout">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -34,7 +36,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:text="i"
-                    android:textStyle=""
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white"
                     android:id="@+id/menu_icon"
                     android:gravity="center" />
@@ -48,6 +50,7 @@
                 android:gravity="center_vertical"
                 android:id="@+id/fragment_title"
                 android:layout_marginLeft="20dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_weight="83" />
 
         </LinearLayout>
@@ -64,12 +67,16 @@
             <FrameLayout
                 android:id="@+id/content_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/back">
+
+
+                </FrameLayout>
 
 
             <ListView android:id="@+id/left_drawer"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="fill_parent"
                 android:weightSum="100"
                 android:layout_marginRight="30dp"
                 android:layout_gravity="start"

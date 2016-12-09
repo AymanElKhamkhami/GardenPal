@@ -6,7 +6,7 @@
     android:layout_height="50dp"
     android:orientation="vertical"
     android:id="@+id/profile_info_container"
-    android:background="@drawable/1680"
+    android:background="@drawable/bg"
     android:gravity="bottom">
 
     <LinearLayout
@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/menu_username"
             android:text="Username"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
             android:background="#80000000"
             android:layout_marginLeft="10dp"
@@ -30,6 +32,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/menu_plants"
             android:text="0 Plants in your garden"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
             android:background="#80000000"
             android:layout_marginLeft="10dp"

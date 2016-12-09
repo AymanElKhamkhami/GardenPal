@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.egardening.egardening.Session.App;
+import com.example.egardening.egardening.Session.TypeFaceUtil;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -55,13 +57,10 @@ public class Login extends Activity implements OnClickListener {
     Button btn_login, btn_cancel;
     TextView txt_register;
     String username, password;
-    ArrayList<NameValuePair> nvps;
-    HttpClient http_client;
-    HttpPost http_post;
-    HttpResponse response;
+
 
     //Ayman 15/02/15 Facebook login variables
-    Facebook fb; // Facebook object
+    //Facebook fb; // Facebook object
     private UiLifecycleHelper uihelper;
     String new_username = null;
     String new_email = null;
@@ -72,6 +71,8 @@ public class Login extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        TypeFaceUtil.applyFont(this, findViewById(R.id.loginlayout), "Montserrat-Regular.ttf");
 
         btn_login = (Button) findViewById(R.id.button_login);
         btn_cancel = (Button) findViewById(R.id.button_cancel);
@@ -125,6 +126,8 @@ public class Login extends Activity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_login:
+                App app = (App) getApplication();/////////////
+                app.setGarden(null);
                 username = et_username.getText().toString();
                 password = et_pass.getText().toString();
                 new LoginTask().execute();
@@ -234,7 +237,6 @@ public class Login extends Activity implements OnClickListener {
         @Override
         public void call(Session session, SessionState state, Exception exception)
         {
-
             onSessionStateChange(session,state,exception);
         }
     };
@@ -266,9 +268,12 @@ public class Login extends Activity implements OnClickListener {
                         startActivity(intent);
                         //Save to database if user is new
                         new RegisterTask().execute();
-                        //showMsg(user.getProperty("email") + "");
-                        //showMsg(user.getProperty("gender") + "");
-                        //showMsg(user.getId() + "");
+                        username = new_username;
+                        password = "";
+
+                        new LoginTask().execute();
+                        System.out.println("facebook user id is : "+sp.getInt("USERID",0));
+
                     } else {
                         showMsg("its null");
                         showMsg(response.getError().getErrorMessage());
@@ -298,6 +303,10 @@ public class Login extends Activity implements OnClickListener {
         InputStream is = null ;
         String result = "";
         HttpEntity entity = null;
+        ArrayList<NameValuePair> nvps;
+        HttpClient http_client;
+        HttpPost http_post;
+        HttpResponse response;
 
 
         protected void onPreExecute() {
@@ -352,6 +361,9 @@ public class Login extends Activity implements OnClickListener {
                     JSONObject json_response = new JSONObject(convertStreamToString(is));
                     String retrieved_usr = json_response.getString("username"); //the name of the field in the table in the DB
                     String retrieved_psd = json_response.getString("password"); //the name of the field in the table in the DB
+                    //Ayman 18/02/15
+                    int retrieved_id = Integer.parseInt(json_response.getString("user_id")); //the name of the field in the table in the DB/
+                    //End Ayman
 
                     //Validate login
                     if((username.equals(retrieved_usr)) && (password.equals(retrieved_psd))) {
@@ -361,12 +373,14 @@ public class Login extends Activity implements OnClickListener {
                         SharedPreferences.Editor speditor = sp.edit();
                         speditor.putString("USERNAME", username);
                         speditor.putString("PASSWORD", password); //Not really needed to store password in session
+                        speditor.putInt("USERID", retrieved_id);
                         speditor.commit();
 
                         this.progressDialog.dismiss();
-                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, Main.class);
                         startActivity(intent);
+                        Login.this.finish();
 
                 }
 
@@ -382,7 +396,7 @@ public class Login extends Activity implements OnClickListener {
                 e.printStackTrace();
                 Log.e("log_tag", "Error parsing data "+e.toString());
                 this.progressDialog.dismiss();
-                Toast.makeText(getBaseContext(), "Connection Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Maybe your username or password is wrong", Toast.LENGTH_SHORT).show();
 
             }
 
